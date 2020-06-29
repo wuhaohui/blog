@@ -14,9 +14,6 @@ use Hyperf\HttpServer\Router\Router;
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 
 
-Router::addGroup('/admin',function (){
-    Router::get('','App\Module\Admin\HomeController@index');
-});
 
 Router::addGroup('/user',function (){
     Router::get('','Module\User\Controller\LoginController@index');
