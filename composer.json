@@ -68,7 +68,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Module\\": "module/"
+            "Module\\": "module/",
+            "Officemate\\Repository\\": "plugin/officemate/hyperf-repository/src"
         },
         "files": []
     },

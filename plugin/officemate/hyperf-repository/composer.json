@@ -1,0 +1,11 @@
+{
+    "name": "",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Hao hui",
+            "email": "haohui.wu@outlook.com"
+        }
+    ],
+    "require": {}
+}
