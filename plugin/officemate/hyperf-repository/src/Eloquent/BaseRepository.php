@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 use Officemate\Repository\Contracts\PresenterInterface;
 use Officemate\Repository\Exceptions\RepositoryException;
 
-class BaseRepository
+abstract class BaseRepository
 {
     /**
      * @var Application
@@ -92,6 +92,7 @@ class BaseRepository
      */
     public function makeModel()
     {
+        var_dump('asdas');exit;
         $model = $this->app->make($this->model());
 
         if (!$model instanceof Model) {

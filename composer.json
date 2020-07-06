@@ -47,7 +47,8 @@
         "yurunsoft/phpmailer-swoole": "^1.0",
         "hyperf/circuit-breaker": "^2.0",
         "hyperf/retry": "^2.0",
-        "league/fractal": "^0.19.2"
+        "league/fractal": "^0.19.2",
+        "hyperf/http-message": "^2.0"
     },
     "require-dev": {
         "swoole/ide-helper": "^4.4",

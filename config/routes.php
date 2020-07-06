@@ -15,6 +15,6 @@ Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@i
 
 
 
-Router::addGroup('/user',function (){
-    Router::get('','Module\User\Controller\LoginController@index');
+Router::addGroup('/oms',function (){
+    Router::get('','Module\OMS\Controller\OrderListController@index');
 });

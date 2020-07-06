@@ -15,4 +15,9 @@ interface CriteriaInterface
      * @return mixed
      */
     public function apply($model, RepositoryInterface $repository);
+
+    /**
+     * @return array
+     */
+    public function getFieldsSearchable(): array;
 }
