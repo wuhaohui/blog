@@ -72,7 +72,9 @@
             "Module\\": "module/",
             "Officemate\\Repository\\": "plugin/officemate/hyperf-repository/src"
         },
-        "files": []
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

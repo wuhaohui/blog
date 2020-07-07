@@ -6,12 +6,15 @@ namespace Officemate\Repository\Eloquent;
 
 
 use App\Model\Model;
+use Hyperf\Contract\ContainerInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Collection;
+use Officemate\Repository\Contracts\CriteriaInterface;
 use Officemate\Repository\Contracts\PresenterInterface;
+use Officemate\Repository\Contracts\RepositoryInterface;
 use Officemate\Repository\Exceptions\RepositoryException;
 
-abstract class BaseRepository
+abstract class BaseRepository implements RepositoryInterface
 {
     /**
      * @var Application
@@ -54,9 +57,9 @@ abstract class BaseRepository
 
 
     /**
-     * @param Application $app
+     * @param ContainerInterface $app
      */
-    public function __construct(Application $app)
+    public function __construct(ContainerInterface $app)
     {
         $this->app      = $app;
         $this->criteria = new Collection();
@@ -92,10 +95,9 @@ abstract class BaseRepository
      */
     public function makeModel()
     {
-        var_dump('asdas');exit;
         $model = $this->app->make($this->model());
 
-        if (!$model instanceof Model) {
+        if (!$model instanceof \Hyperf\DbConnection\Model\Model) {
             throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
@@ -368,9 +370,10 @@ abstract class BaseRepository
     {
         $this->applyCriteria();
         $this->applyScope();
-        $limit = is_null($limit) ? config('repository.pagination.limit', 15) : $limit;
+
+        $limit = is_null($limit) ? 15 : $limit;
         $results = $this->model->{$method}($limit, $columns);
-        $results->appends(app('request')->query());
+//        $results->appends(app('request')->query());
         $this->resetModel();
 
         return $this->parserResult($results);

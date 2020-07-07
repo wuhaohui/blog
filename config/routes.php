@@ -17,4 +17,5 @@ Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@i
 
 Router::addGroup('/oms',function (){
     Router::get('','Module\OMS\Controller\OrderListController@index');
+    Router::post('','Module\OMS\Controller\OrderListController@index');
 });

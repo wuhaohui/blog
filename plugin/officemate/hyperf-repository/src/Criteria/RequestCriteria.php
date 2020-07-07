@@ -33,7 +33,8 @@ class RequestCriteria implements CriteriaInterface
      */
     protected function getParams()
     {
-        return Request::input($this->paramsFiled);
+        $request = new \Hyperf\HttpServer\Request();
+        return $request->input($this->paramsFiled, []);
     }
 
     /**
@@ -55,6 +56,7 @@ class RequestCriteria implements CriteriaInterface
     {
         $this->repository = $repository;
         $model            = $this->{$this->searchWay . 'Builder'}($model, $repository);
+        return $model;
     }
 
     /**
@@ -84,9 +86,17 @@ class RequestCriteria implements CriteriaInterface
         $params            = $this->getParams();//获取查询的字段
         $allowSearchParams = $this->getFieldsSearchable();//可搜索字段
 
-        foreach ($params as $field => $value) {
+        foreach ($allowSearchParams as $field => $condition) {
 
-            $condition = $allowSearchParams[$field];
+            if (isset($params[$field])) {
+                continue;
+            }
+
+            if (is_numeric($field)) {
+                $field     = $condition;
+                $condition = '=';
+            }
+            $value = $params[$field];
 
             if (stripos($field, '.')) {
                 $explode  = explode('.', $field);
@@ -97,12 +107,12 @@ class RequestCriteria implements CriteriaInterface
             $modelTableName = $model->getModel()->getTable();
 
             if (!empty($relation)) {
-                $model->whereHas($relation, function ($query) use ($field, $condition, $value) {
+                $model = $model->whereHas($relation, function ($query) use ($field, $condition, $value) {
                     $query = $this->fileWhere($query, $field, $condition, $value);
                     return $query;
                 });
             } else {
-                $model->where($modelTableName . '.' . $field, $condition, $value);
+                $model = $this->fileWhere($model,$modelTableName . '.' . $field, $condition, $value);
             }
         }
 
@@ -119,17 +129,17 @@ class RequestCriteria implements CriteriaInterface
     protected function fileWhere($model, $column, $operator, $value)
     {
         switch ($operator) {
-            case empty($operator):
-                $model->where($column, $value);
+            case empty($operator) || $operator == '=':
+                $model = $model->where($column, $value);
                 break;
             case ($operator == 'in'):
-                $model->whereIn($column, $value);
+                $model = $model->whereIn($column, $value);
                 break;
             case ($operator == 'between'):
-                $model->whereBetween($column, $value);
+                $model = $model->whereBetween($column, $value);
                 break;
             case ($operator == 'like'):
-                $model->where($column, 'like', $value);
+                $model = $model->where($column, 'like', $value);
                 break;
         }
 
