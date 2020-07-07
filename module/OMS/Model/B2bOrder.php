@@ -25,4 +25,12 @@ class B2bOrder extends Model
     {
         return $this->hasOne(OrderInvoice::class, 'org_id', 'org_id');
     }
+
+    /**
+     * 关联b2b_allocation 表 一对多关系
+     */
+    public function allocation()
+    {
+        return $this->hasMany();
+    }
 }

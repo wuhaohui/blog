@@ -372,6 +372,7 @@ abstract class BaseRepository implements RepositoryInterface
         $this->applyScope();
 
         $limit = is_null($limit) ? 15 : $limit;
+        var_dump($this->model->toSql());
         $results = $this->model->{$method}($limit, $columns);
 //        $results->appends(app('request')->query());
         $this->resetModel();
@@ -965,7 +966,7 @@ abstract class BaseRepository implements RepositoryInterface
         if ($this->presenter instanceof PresenterInterface) {
             if ($result instanceof Collection || $result instanceof LengthAwarePaginator) {
                 $result->each(function ($model) {
-                    if ($model instanceof Presentable) {
+                    if ($model instanceof PresenterInterface) {
                         $model->setPresenter($this->presenter);
                     }
 

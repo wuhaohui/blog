@@ -5,14 +5,22 @@ namespace Officemate\Repository\Criteria;
 
 
 use Hyperf\Database\Model\Builder;
+use Hyperf\Di\Annotation\Inject;
 use Illuminate\Support\Facades\Request;
 use Module\OMS\Model\Model;
 use Officemate\Repository\Contracts\CriteriaInterface;
 use Officemate\Repository\Contracts\RepositoryInterface;
 use Officemate\Repository\Eloquent\BaseRepository;
+use Psr\Http\Message\RequestInterface;
 
 class RequestCriteria implements CriteriaInterface
 {
+    /**
+     * @Inject()
+     * @var RequestInterface
+     */
+    protected $request;
+
     protected $paramsFiled = 'search';
 
     /**
@@ -86,18 +94,21 @@ class RequestCriteria implements CriteriaInterface
         $params            = $this->getParams();//获取查询的字段
         $allowSearchParams = $this->getFieldsSearchable();//可搜索字段
 
-        foreach ($allowSearchParams as $field => $condition) {
 
-            if (isset($params[$field])) {
-                continue;
-            }
+        foreach ($allowSearchParams as $field => $condition) {
 
             if (is_numeric($field)) {
                 $field     = $condition;
                 $condition = '=';
             }
+
+            if (!isset($params[$field])) {
+                continue;
+            }
+
             $value = $params[$field];
 
+            $relation = null;
             if (stripos($field, '.')) {
                 $explode  = explode('.', $field);
                 $field    = array_pop($explode);
@@ -112,7 +123,7 @@ class RequestCriteria implements CriteriaInterface
                     return $query;
                 });
             } else {
-                $model = $this->fileWhere($model,$modelTableName . '.' . $field, $condition, $value);
+                $model = $this->fileWhere($model, $modelTableName . '.' . $field, $condition, $value);
             }
         }
 

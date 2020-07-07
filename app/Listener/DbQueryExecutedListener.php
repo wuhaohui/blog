@@ -54,7 +54,7 @@ class DbQueryExecutedListener implements ListenerInterface
                     $sql = Str::replaceFirst('?', "'{$value}'", $sql);
                 }
             }
-
+            var_dump(sprintf('[%s] %s', $event->time, $sql));
             $this->logger->info(sprintf('[%s] %s', $event->time, $sql));
         }
     }

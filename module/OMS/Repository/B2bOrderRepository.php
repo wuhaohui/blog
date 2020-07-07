@@ -17,7 +17,8 @@ use Officemate\Repository\Eloquent\BaseRepository;
 class B2bOrderRepository extends BaseRepository
 {
     protected $fieldSearchable = [
-      'id'
+        'id',
+        'orderInvoice.title' => 'like'
     ];
 
     public function boot()
