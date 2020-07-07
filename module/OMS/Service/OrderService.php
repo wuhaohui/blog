@@ -6,7 +6,7 @@ namespace Module\OMS\Service;
 
 use Hyperf\Di\Annotation\Inject;
 use Module\OMS\Repository\B2bOrderRepository;
-use function App\app;
+
 
 class OrderService extends BaseService
 {

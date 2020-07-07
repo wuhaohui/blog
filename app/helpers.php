@@ -1,8 +1,5 @@
 <?php
 
-namespace App;
-
-
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Logger\LoggerFactory;
